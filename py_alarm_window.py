@@ -19,8 +19,25 @@ class PyAlarmWindow(Tkinter.Tk):
         self.grid()
 
         self.entry = Tkinter.Entry(self)
-        self.entry.grid(column=0, row=0, sticky='EW')
+        self.entry.grid(column=0, row=0, sticky="EW")
+        self.entry.bind("<Return>", self.on_press_enter)
 
+        button = Tkinter.Button(self, text="Find song",
+                                command=self.on_button_click)
+        button.grid(column=1, row=0)
+
+        self.label_variable = Tkinter.StringVar()
+        label = Tkinter.Label(self, textvariable=self.label_variable, anchor="w", fg="white", bg="blue")
+        label.grid(column=0, row=2, columnspan=2, sticky="EW")
+
+        self.grid_columnconfigure(0, weight=1)
+        self.resizable(True, False)
+
+    def on_button_click(self):
+        self.label_variable.set("You clicked the button!")
+
+    def on_press_enter(self, event):
+        print("You pressed enter!")
 
 if __name__ == "__main__":
     py_alarm_app = PyAlarmWindow(None)
