@@ -6,17 +6,20 @@ will house the main logic of PyAlarm.
 """
 
 
-import tkinter
+import Tkinter
 
 
-class PyAlarmWindow(tkinter.Tk):
+class PyAlarmWindow(Tkinter.Tk):
     def __init__(self, parent):
-        tkinter.Tk.__init__(self, parent)
+        Tkinter.Tk.__init__(self, parent)
         self.parent = parent
         self.initialize_window()
 
     def initialize_window(self):
-        pass
+        self.grid()
+
+        self.entry = Tkinter.Entry(self)
+        self.entry.grid(column=0, row=0, sticky='EW')
 
 
 if __name__ == "__main__":
