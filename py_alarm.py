@@ -7,7 +7,6 @@ import time
 import sys
 import threading
 
-
 wake_up_song_list = glob.glob("../*.m4a")
 random_song = random.randint(0, len(wake_up_song_list) - 1)
 

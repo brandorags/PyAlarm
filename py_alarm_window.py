@@ -5,24 +5,29 @@ Description: This file generates the main window that
 will house the main logic of PyAlarm.
 """
 
-import Tkinter
+import tkinter
+import getpass
+
+from tkinter import Frame
+from tkinter import filedialog
 
 
-class PyAlarmWindow(Tkinter.Tk):
-    def __init__(self, parent):
-        Tkinter.Tk.__init__(self, parent)
-        self.parent = parent
+class PyAlarmWindow(Frame):
+    def __init__(self):
+        Frame.__init__(self)
+        self.master.title("PyAlarm")
+        self.master.geometry("{}x{}".format(300, 200))
         self.initialize_window()
 
     def initialize_window(self):
         self.grid()
 
-        self.entry_variable = Tkinter.StringVar()
-        self.entry = Tkinter.Entry(self, textvariable=self.entry_variable)
+        self.entry_variable = tkinter.StringVar()
+        self.entry = tkinter.Entry(self, textvariable=self.entry_variable)
         self.entry.grid(column=0, row=0, sticky="EW")
         self.entry.bind("<Return>", self.on_press_enter)
 
-        button = Tkinter.Button(self, text="Find song",
+        button = tkinter.Button(self, text="Find song",
                                 command=self.on_button_click)
         button.grid(column=1, row=0)
 
@@ -32,9 +37,7 @@ class PyAlarmWindow(Tkinter.Tk):
         # self.label_variable.set(u"Hello!")
 
         self.grid_columnconfigure(0, weight=1)
-        self.resizable(True, False)
         self.update()
-        self.geometry(self.geometry())
 
     def on_button_click(self):
         self.label_variable.set(self.entry_variable.get() + " (You clicked the button)")
@@ -42,8 +45,11 @@ class PyAlarmWindow(Tkinter.Tk):
     def on_press_enter(self, event):
         self.label_variable.set(self.entry_variable.get() + " (You pressed ENTER)")
 
+    def return_song_location(self):
+        current_user = getpass.getuser()
+        song_file = tkinter
+
+
 if __name__ == "__main__":
-    py_alarm_app = PyAlarmWindow(None)
-    py_alarm_app.title("PyAlarm")
-    py_alarm_app.geometry("{}x{}".format(500, 500))
+    py_alarm_app = PyAlarmWindow()
     py_alarm_app.mainloop()
