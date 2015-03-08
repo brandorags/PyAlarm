@@ -23,7 +23,8 @@ class PyAlarmWindow(Frame):
     def initialize_window(self):
         self.grid()
 
-        find_song_button = tk.Button(self, text="Find song",
+        # song/album directory location settings
+        find_song_button = tk.Button(self, text="Find Song",
                                      command=self.return_song_location)
         find_song_button.grid(column=0, row=0, sticky="EW")
 
@@ -32,15 +33,26 @@ class PyAlarmWindow(Frame):
         self.song_path_textbox.grid(column=1, row=0, sticky="EW")
         self.song_path_textbox.bind("<Return>", self.song_path_textbox_on_press_enter)
 
-        hour_spinbox_list = tk.Spinbox(self, from_=0, to=24, width=10)
-        hour_spinbox_list.grid(column=0, row=1)
-        minute_spinbox_list = tk.Spinbox(self, from_=00, to=59)
-        minute_spinbox_list.grid(column=1, row=1)
+        # hour settings
+        self.hour_label = tk.StringVar()
+        hour_label = tk.Label(self, text="Hour:", anchor="w")
+        hour_label.grid(column=0, row=1, sticky="EW")
 
-        # self.label_variable = Tkinter.StringVar()
-        # label = Tkinter.Label(self, textvariable=self.label_variable, anchor="w", fg="white", bg="blue")
-        # label.grid(column=0, row=2, columnspan=2, sticky="EW")
-        # self.label_variable.set(u"Hello!")
+        hour_spinbox = tk.Spinbox(self, from_=0, to=24, width=3, wrap=True)
+        hour_spinbox.grid(column=0, row=1, sticky="E")
+
+        # minute settings
+        self.minute_label = tk.StringVar()
+        minute_label = tk.Label(self, text="Minute:", anchor="w")
+        minute_label.grid(column=1, row=1, sticky="EW")
+
+        minute_spinbox_list = tk.Spinbox(self, from_=00, to=59, width=3, wrap=True)
+        minute_spinbox_list.grid(column=1, row=1, sticky="N")
+
+        # set alarm button settings
+        set_alarm_button = tk.Button(self, text="Set Alarm",
+                                     command=self.return_song_location)
+        set_alarm_button.grid(column=1, row=1, sticky="E")
 
         self.grid_columnconfigure(0, weight=1)
         self.update()
