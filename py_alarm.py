@@ -7,8 +7,8 @@ import time
 import sys
 import threading
 
-wake_up_song_list = glob.glob("../*.m4a")
-random_song = random.randint(0, len(wake_up_song_list) - 1)
+#wake_up_song_list = glob.glob("../*.m4a")
+#random_song = random.randint(0, len(wake_up_song_list) - 1)
 
 
 def set_volume():
@@ -59,12 +59,15 @@ def main_loop():
 
         time.sleep(25)
 
+def print_stuff():
+    print("hello!")
+
 
 # set the system volume to 1
-os.system("sudo osascript -e 'set Volume 1'")
+#os.system("sudo osascript -e 'set Volume 1'")
 
 # start the main loop that waits for the specified time for the alarm to go off
-main_loop()
+#main_loop()
 
 # reset the system volume to 1
-os.system("sudo osascript -e 'set Volume 1'")
+#os.system("sudo osascript -e 'set Volume 1'")
