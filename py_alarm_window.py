@@ -5,9 +5,8 @@ Description: This file generates the main window that
 will house the main logic of PyAlarm.
 """
 
-import tkinter
+import tkinter as tk
 import getpass
-import py_alarm as PyAlarm
 
 from tkinter import Frame
 from tkinter.filedialog import askopenfile
@@ -18,20 +17,25 @@ class PyAlarmWindow(Frame):
     def __init__(self):
         Frame.__init__(self)
         self.master.title("PyAlarm")
-        self.master.geometry("{}x{}".format(300, 200))
+        self.master.geometry("{}x{}".format(500, 400))
         self.initialize_window()
 
     def initialize_window(self):
         self.grid()
 
-        self.song_path = tkinter.StringVar()
-        self.song_path_textbox = tkinter.Entry(self, textvariable=self.song_path)
-        self.song_path_textbox.grid(column=0, row=0, sticky="EW")
-        self.song_path_textbox.bind("<Return>", self.on_press_enter)
+        find_song_button = tk.Button(self, text="Find song",
+                                     command=self.return_song_location)
+        find_song_button.grid(column=0, row=0, sticky="EW")
 
-        find_song_button = tkinter.Button(self, text="Find song",
-                                          command=self.return_song_location)
-        find_song_button.grid(column=1, row=0)
+        self.song_path = tk.StringVar()
+        self.song_path_textbox = tk.Entry(self, width=30, textvariable=self.song_path)
+        self.song_path_textbox.grid(column=1, row=0, sticky="EW")
+        self.song_path_textbox.bind("<Return>", self.song_path_textbox_on_press_enter)
+
+        hour_spinbox_list = tk.Spinbox(self, from_=0, to=24, width=10)
+        hour_spinbox_list.grid(column=0, row=1)
+        minute_spinbox_list = tk.Spinbox(self, from_=00, to=59)
+        minute_spinbox_list.grid(column=1, row=1)
 
         # self.label_variable = Tkinter.StringVar()
         # label = Tkinter.Label(self, textvariable=self.label_variable, anchor="w", fg="white", bg="blue")
@@ -44,8 +48,8 @@ class PyAlarmWindow(Frame):
     # def on_button_click(self):
     #     self.label_variable.set(self.entry_variable.get() + " (You clicked the button)")
     #
-    # def on_press_enter(self, event):
-    #     self.label_variable.set(self.entry_variable.get() + " (You pressed ENTER)")
+    def song_path_textbox_on_press_enter(self, event):
+        self.return_song_location()
 
     def return_song_location(self):
         current_user = getpass.getuser()
@@ -53,7 +57,7 @@ class PyAlarmWindow(Frame):
 
         if song_file:
             try:
-                self.entry_variable.set(song_file.name)
+                self.song_path.set(song_file.name)
             except:
                 showerror("Find Song", "Could not find the song\n %s" % song_file.name)
 
