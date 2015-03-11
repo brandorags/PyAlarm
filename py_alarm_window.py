@@ -1,80 +1,54 @@
-"""
-Name: py_alarm_window.py
-Author: Brandon Ragsdale
-Description: This file generates the main window that
-will house the main logic of PyAlarm.
-"""
+# -*- coding: utf-8 -*-
 
-import tkinter as tk
-import py_alarm as PyAlarm
-import getpass
+# Form implementation generated from reading ui file 'PyAlarm.ui'
+#
+# Created: Wed Mar 11 00:58:02 2015
+#      by: pyside-uic 0.2.15 running on PySide 1.2.2
+#
+# WARNING! All changes made in this file will be lost!
 
-from tkinter import Frame
-from tkinter.filedialog import askopenfile
-from tkinter.messagebox import showerror
+from PySide import QtCore, QtGui
 
+class Ui_PyAlarmWindow(object):
+    def setupUi(self, PyAlarmWindow):
+        PyAlarmWindow.setObjectName("PyAlarmWindow")
+        PyAlarmWindow.resize(320, 240)
+        self.pushButton = QtGui.QPushButton(PyAlarmWindow)
+        self.pushButton.setGeometry(QtCore.QRect(10, 50, 131, 31))
+        self.pushButton.setObjectName("pushButton")
+        self.py_alarm_label = QtGui.QLabel(PyAlarmWindow)
+        self.py_alarm_label.setGeometry(QtCore.QRect(25, 13, 261, 41))
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.py_alarm_label.sizePolicy().hasHeightForWidth())
+        self.py_alarm_label.setSizePolicy(sizePolicy)
+        self.py_alarm_label.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        palette = QtGui.QPalette()
+        brush = QtGui.QBrush(QtGui.QColor(64, 128, 0))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.WindowText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(64, 128, 0))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.WindowText, brush)
+        brush = QtGui.QBrush(QtGui.QColor(69, 69, 69))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, brush)
+        self.py_alarm_label.setPalette(palette)
+        font = QtGui.QFont()
+        font.setPointSize(24)
+        font.setWeight(50)
+        font.setBold(False)
+        self.py_alarm_label.setFont(font)
+        self.py_alarm_label.setTextFormat(QtCore.Qt.AutoText)
+        self.py_alarm_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.py_alarm_label.setObjectName("py_alarm_label")
 
-class PyAlarmWindow(Frame):
-    def __init__(self):
-        Frame.__init__(self)
-        self.master.title("PyAlarm")
-        self.master.geometry("{}x{}".format(500, 400))
-        self.initialize_window()
+        self.retranslateUi(PyAlarmWindow)
+        QtCore.QMetaObject.connectSlotsByName(PyAlarmWindow)
 
-    def initialize_window(self):
-        self.grid()
+    def retranslateUi(self, PyAlarmWindow):
+        PyAlarmWindow.setWindowTitle(QtGui.QApplication.translate("PyAlarmWindow", "PyAlarm", None, QtGui.QApplication.UnicodeUTF8))
+        self.pushButton.setText(QtGui.QApplication.translate("PyAlarmWindow", "Find Song/Album", None, QtGui.QApplication.UnicodeUTF8))
+        self.py_alarm_label.setText(QtGui.QApplication.translate("PyAlarmWindow", "Welcome to PyAlarm!", None, QtGui.QApplication.UnicodeUTF8))
 
-        # song/album directory location settings
-        find_song_button = tk.Button(self, text="Find Song",
-                                     command=self.return_song_location)
-        find_song_button.grid(column=0, row=0, sticky="EW")
-
-        self.song_path = tk.StringVar()
-        self.song_path_textbox = tk.Entry(self, width=30, textvariable=self.song_path)
-        self.song_path_textbox.grid(column=1, row=0, sticky="EW")
-        self.song_path_textbox.bind("<Return>", self.song_path_textbox_on_press_enter)
-
-        # hour settings
-        self.hour_label = tk.StringVar()
-        hour_label = tk.Label(self, text="Hour:", anchor="w")
-        hour_label.grid(column=0, row=1, sticky="W")
-
-        hour_spinbox = tk.Spinbox(self, from_=0, to=24, width=3, wrap=True)
-        hour_spinbox.grid(column=0, row=2, sticky="W")
-
-        # minute settings
-        self.minute_label = tk.StringVar()
-        minute_label = tk.Label(self, text="Minute:", anchor="w")
-        minute_label.grid(column=0, row=1, sticky="E")
-
-        minute_spinbox_list = tk.Spinbox(self, from_=00, to=59, width=3, wrap=True)
-        minute_spinbox_list.grid(column=0, row=2, sticky="E")
-
-        # set alarm button settings
-        set_alarm_button = tk.Button(self, text="Set Alarm",
-                                     command=PyAlarm.main_loop())
-        set_alarm_button.grid(column=0, row=3, sticky="W")
-
-        self.grid_columnconfigure(0, weight=1)
-        self.update()
-
-    # def on_button_click(self):
-    #     self.label_variable.set(self.entry_variable.get() + " (You clicked the button)")
-    #
-    def song_path_textbox_on_press_enter(self, event):
-        self.return_song_location()
-
-    def return_song_location(self):
-        current_user = getpass.getuser()
-        song_file = askopenfile(mode='r', initialdir="/Users/%s/Music" % current_user)
-
-        if song_file:
-            try:
-                self.song_path.set(song_file.name)
-            except:
-                showerror("Find Song", "Could not find the song\n %s" % song_file.name)
-
-
-if __name__ == "__main__":
-    py_alarm_app = PyAlarmWindow()
-    py_alarm_app.mainloop()
