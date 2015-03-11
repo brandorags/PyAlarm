@@ -2,14 +2,20 @@
 
 # Form implementation generated from reading ui file 'PyAlarm.ui'
 #
-# Created: Wed Mar 11 00:58:02 2015
+# Created: Wed Mar 11 11:54:17 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
 
+import sys
 from PySide import QtCore, QtGui
 
-class Ui_PyAlarmWindow(object):
+
+class Ui_PyAlarmWindow(QtGui.QWidget):
+    def __init__(self):
+        QtGui.QWidget.__init__(self)
+        self.setupUi(self)
+
     def setupUi(self, PyAlarmWindow):
         PyAlarmWindow.setObjectName("PyAlarmWindow")
         PyAlarmWindow.resize(320, 240)
@@ -52,3 +58,8 @@ class Ui_PyAlarmWindow(object):
         self.pushButton.setText(QtGui.QApplication.translate("PyAlarmWindow", "Find Song/Album", None, QtGui.QApplication.UnicodeUTF8))
         self.py_alarm_label.setText(QtGui.QApplication.translate("PyAlarmWindow", "Welcome to PyAlarm!", None, QtGui.QApplication.UnicodeUTF8))
 
+if __name__ == "__main__":
+    app = QtGui.QApplication(sys.argv)
+    ex = Ui_PyAlarmWindow()
+    ex.show()
+    sys.exit(app.exec_())
