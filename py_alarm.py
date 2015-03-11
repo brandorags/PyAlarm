@@ -23,9 +23,9 @@ def set_volume():
         time.sleep(5)
 
 
-def play_song():
-    print("Good morning! It's time to wake up!")
-    call(["afplay", wake_up_song_list[random_song]])
+# def play_song():
+#     print("Good morning! It's time to wake up!")
+#     call(["afplay", wake_up_song_list[random_song]])
 
 
 def play_default_song_if_argv_has_mistake():
@@ -46,7 +46,7 @@ def main_loop():
                 volume_level.daemon = True
                 volume_level.start()
                 # play the song!
-                play_song()
+                # play_song()
                 keep_going = False
         except:
             # create thread that will increase the volume while the track is playing
@@ -57,10 +57,7 @@ def main_loop():
             play_default_song_if_argv_has_mistake()
             keep_going = False
 
-        time.sleep(25)
-
-def print_stuff():
-    print("hello!")
+        # time.sleep(25)
 
 
 # set the system volume to 1

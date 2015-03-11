@@ -6,6 +6,7 @@ will house the main logic of PyAlarm.
 """
 
 import tkinter as tk
+import py_alarm as PyAlarm
 import getpass
 
 from tkinter import Frame
@@ -36,23 +37,23 @@ class PyAlarmWindow(Frame):
         # hour settings
         self.hour_label = tk.StringVar()
         hour_label = tk.Label(self, text="Hour:", anchor="w")
-        hour_label.grid(column=0, row=1, sticky="EW")
+        hour_label.grid(column=0, row=1, sticky="W")
 
         hour_spinbox = tk.Spinbox(self, from_=0, to=24, width=3, wrap=True)
-        hour_spinbox.grid(column=0, row=1, sticky="E")
+        hour_spinbox.grid(column=0, row=2, sticky="W")
 
         # minute settings
         self.minute_label = tk.StringVar()
         minute_label = tk.Label(self, text="Minute:", anchor="w")
-        minute_label.grid(column=1, row=1, sticky="EW")
+        minute_label.grid(column=0, row=1, sticky="E")
 
         minute_spinbox_list = tk.Spinbox(self, from_=00, to=59, width=3, wrap=True)
-        minute_spinbox_list.grid(column=1, row=1, sticky="N")
+        minute_spinbox_list.grid(column=0, row=2, sticky="E")
 
         # set alarm button settings
         set_alarm_button = tk.Button(self, text="Set Alarm",
-                                     command=self.return_song_location)
-        set_alarm_button.grid(column=1, row=1, sticky="E")
+                                     command=PyAlarm.main_loop())
+        set_alarm_button.grid(column=0, row=3, sticky="W")
 
         self.grid_columnconfigure(0, weight=1)
         self.update()
