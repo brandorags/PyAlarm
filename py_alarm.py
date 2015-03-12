@@ -6,11 +6,11 @@ import glob
 import time
 import sys
 import threading
+import getpass
+from PySide import QtGui
 
 
 class PyAlarm(object):
-    def hello(self):
-        print("Hello!")
+    def retrieve_album_location(self):
+        pass
 
-cool = PyAlarm()
-cool.hello()
