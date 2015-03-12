@@ -8,6 +8,8 @@
 # WARNING! All changes made in this file will be lost!
 
 import sys
+import os
+import getpass
 from PySide import QtCore, QtGui
 
 
@@ -57,6 +59,17 @@ class Ui_PyAlarmWindow(QtGui.QWidget):
         PyAlarmWindow.setWindowTitle(QtGui.QApplication.translate("PyAlarmWindow", "PyAlarm", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton.setText(QtGui.QApplication.translate("PyAlarmWindow", "Find Song/Album", None, QtGui.QApplication.UnicodeUTF8))
         self.py_alarm_label.setText(QtGui.QApplication.translate("PyAlarmWindow", "Welcome to PyAlarm!", None, QtGui.QApplication.UnicodeUTF8))
+
+        self.pushButton.clicked.connect(self.retrieve_album_location)
+
+    def retrieve_album_location(self):
+        current_user = getpass.getuser()
+        album_initial_search_location = "/Users/%s/Music" % current_user
+        dialog = QtGui.QFileDialog()
+        dialog.setFileMode(QtGui.QFileDialog.Directory)
+        dialog.setOption(QtGui.QFileDialog.ShowDirsOnly)
+        directory = dialog.getExistingDirectory(self, 'Choose Directory', os.path.curdir)
+        print(directory)
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
