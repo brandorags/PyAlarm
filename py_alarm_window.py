@@ -8,14 +8,16 @@
 # WARNING! All changes made in this file will be lost!
 
 import sys
-import os
 import getpass
+
 from PySide import QtCore, QtGui
+from py_alarm import PyAlarm
 
 
-class Ui_PyAlarmWindow(QtGui.QWidget):
+class Ui_PyAlarmWindow(QtGui.QWidget, PyAlarm):
     def __init__(self):
         QtGui.QWidget.__init__(self)
+        PyAlarm.__init__(self)
         self.setupUi(self)
 
     def setupUi(self, PyAlarmWindow):
@@ -64,12 +66,15 @@ class Ui_PyAlarmWindow(QtGui.QWidget):
 
     def retrieve_album_location(self):
         current_user = getpass.getuser()
-        album_initial_search_location = "/Users/%s/Music" % current_user
+        album_initial_search_location = "/Users/%s/Music/iTunes Media/Music" % current_user
+
         dialog = QtGui.QFileDialog()
         dialog.setFileMode(QtGui.QFileDialog.Directory)
         dialog.setOption(QtGui.QFileDialog.ShowDirsOnly)
-        directory = dialog.getExistingDirectory(self, 'Choose Directory', os.path.curdir)
-        print(directory)
+        directory = dialog.getExistingDirectory(self, "Choose Album Folder", album_initial_search_location)
+
+        self.create_and_randomize_song_list(directory)
+
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
