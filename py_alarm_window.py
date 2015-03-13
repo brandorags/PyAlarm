@@ -62,7 +62,11 @@ class Ui_PyAlarmWindow(QtGui.QWidget, PyAlarm):
         self.pushButton.setText(QtGui.QApplication.translate("PyAlarmWindow", "Find Song/Album", None, QtGui.QApplication.UnicodeUTF8))
         self.py_alarm_label.setText(QtGui.QApplication.translate("PyAlarmWindow", "Welcome to PyAlarm!", None, QtGui.QApplication.UnicodeUTF8))
 
-        self.pushButton.clicked.connect(self.retrieve_album_location)
+        # on click for find_album_button
+        self.find_album_button.clicked.connect(self.retrieve_album_location)
+
+        # on click for find_song_button
+        self.find_song_button.clicked.connect(self.retrieve_song_location)
 
     def retrieve_album_location(self):
         current_user = getpass.getuser()
@@ -73,8 +77,19 @@ class Ui_PyAlarmWindow(QtGui.QWidget, PyAlarm):
         dialog.setOption(QtGui.QFileDialog.ShowDirsOnly)
         directory = dialog.getExistingDirectory(self, "Choose Album Folder", album_initial_search_location)
 
-        self.create_and_randomize_song_list(directory)
+        # show user the album that it will play a random song from
+        album_list = self.create_and_randomize_song_list(directory)
+        self.random_song_display_label.setText("A random song will be played from " + album_list)
 
+    def retrieve_song_location(self):
+        current_user = getpass.getuser()
+        album_initial_search_location = "/Users/%s/Music/iTunes Media/Music" % current_user
+
+        dialog = QtGui.QFileDialog()
+        song_path = dialog.getOpenFileName(self, "Choose Song", album_initial_search_location)
+        # directory = dialog.getExistingDirectory(self, "Choose Song", album_initial_search_location)
+
+        self.specific_song_display_label.setText("The song %s will be played" % str(song_path[0]))
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
