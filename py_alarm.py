@@ -1,4 +1,5 @@
 from datetime import datetime
+import subprocess
 from subprocess import Popen, call
 import multiprocessing
 import os
@@ -9,6 +10,7 @@ import sys
 import threading
 import getpass
 
+test = None
 
 class PyAlarm(object):
     """
@@ -40,19 +42,23 @@ class PyAlarm(object):
 
     def store_specific_song(self, user_selected_song):
         self.specific_song = user_selected_song
-        self.play_specific_song_process = multiprocessing.Process(target=self.play_song)
+        # self.play_specific_song_process = multiprocessing.Process(target=self.play_song)
         self.album_list = None
         self.random_song = None
-
-    def create_separate_process_to_play_song(self):
-        self.play_specific_song_process.start()
+        self.play_song()
 
     def play_song(self):
+        global test
         if self.album_list and self.random_song:
             call(["afplay", self.album_list[self.random_song]])
         elif self.specific_song:
-            call(["afplay", str(self.specific_song[0])])
+            test = Popen(["afplay", str(self.specific_song[0])])
 
-    def stop_song(self):
-        self.play_specific_song_process.terminate()
-        self.play_specific_song_process.join()
+    def start_separate_process_to_play_song(self):
+        self.play_specific_song_process.start()
+
+    def stop_separate_process_to_play_song(self):
+        # pid_of_song_process = self.play_specific_song_process.pid + 1
+        # self.play_specific_song_process.terminate()
+        test.terminate()
+        # call(["kill", str(pid_of_song_process)])
