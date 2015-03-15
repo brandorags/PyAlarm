@@ -30,6 +30,10 @@ class PyAlarm(object):
             for songs in song_types:
                 songs_from_user_selected_directory.extend(glob.glob(songs))
 
+            if not songs_from_user_selected_directory:
+                call(["cd", user_selected_directory])
+                songs_from_user_selected_directory.extend(glob.glob(user_selected_directory))
+
             # set class variables
             self.album_list = songs_from_user_selected_directory
             self.random_song = random.randint(0, len(self.album_list) - 1)
