@@ -83,8 +83,8 @@ class Ui_PyAlarmWindow(QtGui.QWidget, PyAlarm):
         self.find_song_button.setGeometry(QtCore.QRect(128, 135, 91, 31))
         self.find_song_button.setCursor(QtCore.Qt.PointingHandCursor)
         self.find_song_button.setObjectName("find_song_button")
-        self.random_song_display_label = QtGui.QLabel(PyAlarmWindow)
-        self.random_song_display_label.setGeometry(QtCore.QRect(7, 173, 221, 51))
+        self.random_or_specific_song_display_label = QtGui.QLabel(PyAlarmWindow)
+        self.random_or_specific_song_display_label.setGeometry(QtCore.QRect(7, 173, 221, 41))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -95,39 +95,19 @@ class Ui_PyAlarmWindow(QtGui.QWidget, PyAlarm):
         brush = QtGui.QBrush(QtGui.QColor(69, 69, 69))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, brush)
-        self.random_song_display_label.setPalette(palette)
-        self.random_song_display_label.setText("")
-        self.random_song_display_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.random_song_display_label.setWordWrap(True)
-        self.random_song_display_label.setObjectName("random_song_display_label")
-        self.specific_song_display_label = QtGui.QLabel(PyAlarmWindow)
-        self.specific_song_display_label.setEnabled(False)
-        self.specific_song_display_label.setGeometry(QtCore.QRect(7, 173, 221, 51))
-        palette = QtGui.QPalette()
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.WindowText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(0, 0, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.WindowText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(69, 69, 69))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, brush)
-        self.specific_song_display_label.setPalette(palette)
-        self.specific_song_display_label.setText("")
-        self.specific_song_display_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.specific_song_display_label.setWordWrap(True)
-        self.specific_song_display_label.setObjectName("specific_song_display_label")
+        self.random_or_specific_song_display_label.setPalette(palette)
+        self.random_or_specific_song_display_label.setText("")
+        self.random_or_specific_song_display_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.random_or_specific_song_display_label.setWordWrap(True)
+        self.random_or_specific_song_display_label.setObjectName("random_or_specific_song_display_label")
         self.start_alarm_button = QtGui.QPushButton(PyAlarmWindow)
         self.start_alarm_button.setGeometry(QtCore.QRect(9, 250, 110, 32))
         self.start_alarm_button.setCursor(QtCore.Qt.PointingHandCursor)
         self.start_alarm_button.setCheckable(False)
-        self.start_alarm_button.setEnabled(False)
         self.start_alarm_button.setObjectName("start_alarm_button")
         self.stop_alarm_button = QtGui.QPushButton(PyAlarmWindow)
         self.stop_alarm_button.setGeometry(QtCore.QRect(120, 250, 110, 32))
         self.stop_alarm_button.setCursor(QtCore.Qt.PointingHandCursor)
-        self.stop_alarm_button.setEnabled(False)
         self.stop_alarm_button.setObjectName("stop_alarm_button")
 
         self.retranslateUi(PyAlarmWindow)
@@ -175,8 +155,7 @@ class Ui_PyAlarmWindow(QtGui.QWidget, PyAlarm):
             artist_album = split_directory[len(split_directory) - 2] + " - " + \
                            split_directory[len(split_directory) - 1]
 
-            self.random_song_display_label.setText("A random song will be played from " + artist_album)
-            self.specific_song_display_label.setText("")
+            self.random_or_specific_song_display_label.setText("A random song will be played from " + artist_album)
             self.start_alarm_button.setEnabled(True)
 
     def retrieve_song_location(self):
@@ -193,8 +172,7 @@ class Ui_PyAlarmWindow(QtGui.QWidget, PyAlarm):
                                       split_song_path[len(split_song_path) - 1]
 
             self.store_specific_song(song_path)
-            self.specific_song_display_label.setText("The song %s will be played" % artist_album_song_title)
-            self.random_song_display_label.setText("")
+            self.random_or_specific_song_display_label.setText("The song %s will be played" % artist_album_song_title)
             self.start_alarm_button.setEnabled(True)
 
     def start_alarm(self):
@@ -207,8 +185,7 @@ class Ui_PyAlarmWindow(QtGui.QWidget, PyAlarm):
         self.play_song()
 
     def stop_alarm(self):
-        self.random_song_display_label.setText("")
-        self.specific_song_display_label.setText("")
+        self.random_or_specific_song_display_label.setText("")
         self.hour_spinbox.setEnabled(True)
         self.minute_spinbox.setEnabled(True)
         self.find_album_button.setEnabled(True)
