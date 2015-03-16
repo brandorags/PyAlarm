@@ -1,6 +1,6 @@
 from datetime import datetime
 from subprocess import Popen, call
-import multiprocessing
+from multiprocessing import Process
 import os
 import random
 import glob
@@ -11,6 +11,7 @@ import getpass
 
 # this subprocess will play the alarm sound/song
 song_subprocess = None
+hour_minute_checker = None
 
 class PyAlarm(object):
     """
@@ -47,13 +48,34 @@ class PyAlarm(object):
         self.album_list = None
         self.random_song = None
 
-    def play_song(self):
+    def check_for_hour_and_minute(self, hour, minute):
         global song_subprocess
-        if self.album_list and self.random_song:
-            song_subprocess = Popen(["afplay", self.album_list[self.random_song]])
-        elif self.specific_song:
-            song_subprocess = Popen(["afplay", str(self.specific_song[0])])
+        now = datetime.now()
+        keep_going = True
+
+        while keep_going:
+            if hour == now.hour and minute == now.minute:
+                if self.album_list and self.random_song:
+                    song_subprocess = Popen(["afplay", self.album_list[self.random_song]])
+                    keep_going = False
+                elif self.specific_song:
+                    song_subprocess = Popen(["afplay", str(self.specific_song[0])])
+                    keep_going = False
+
+            time.sleep(25)
+
+    def play_song_at_specified_time(self, hour, minute):
+        global hour_minute_checker
+        hour_minute_checker = threading.Timer(0.5, self.check_for_hour_and_minute,
+                                              args=(hour, minute))
+        hour_minute_checker.daemon = True
+        hour_minute_checker.start()
 
     def stop_song(self):
         global song_subprocess
-        song_subprocess.terminate()
+        global hour_minute_checker
+        if song_subprocess:
+            song_subprocess.terminate()
+
+        if hour_minute_checker.is_alive():
+            hour_minute_checker.terminate()
