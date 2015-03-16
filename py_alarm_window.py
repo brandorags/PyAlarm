@@ -182,6 +182,9 @@ class Ui_PyAlarmWindow(QtGui.QWidget, PyAlarm):
         self.find_song_button.setEnabled(False)
         self.start_alarm_button.setEnabled(False)
         self.stop_alarm_button.setEnabled(True)
+
+        hour_value = self.hour_spinbox.value()
+        minute_value = self.minute_spinbox.value()
         self.play_song()
 
     def stop_alarm(self):
