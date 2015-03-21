@@ -1,17 +1,13 @@
 from datetime import datetime
 from subprocess import Popen, call
-from multiprocessing import Process
-import os
 import random
 import glob
 import time
-import sys
 import threading
-import getpass
 
-# this subprocess will play the alarm sound/song
-song_subprocess = None
+song_subprocess = None  # this subprocess will play the alarm sound/song
 hour_minute_checker = None
+
 
 class PyAlarm(object):
     """
@@ -25,14 +21,14 @@ class PyAlarm(object):
 
     def create_and_randomize_song_list(self, user_selected_directory):
         if user_selected_directory:
-            song_types = (user_selected_directory + "/*.mp3", user_selected_directory + "/*.m4a")
+            song_types = (user_selected_directory + '/*.mp3', user_selected_directory + '/*.m4a')
             songs_from_user_selected_directory = []
 
             for songs in song_types:
                 songs_from_user_selected_directory.extend(glob.glob(songs))
 
             if not songs_from_user_selected_directory:
-                call(["cd", user_selected_directory])
+                call(['cd', user_selected_directory])
                 songs_from_user_selected_directory.extend(glob.glob(user_selected_directory))
 
             # set class variables
@@ -56,10 +52,10 @@ class PyAlarm(object):
             now = datetime.now()
             if hour == now.hour and minute == now.minute:
                 if self.album_list and self.random_song:
-                    song_subprocess = Popen(["afplay", self.album_list[self.random_song]])
+                    song_subprocess = Popen(['afplay', self.album_list[self.random_song]])
                     keep_going = False
                 elif self.specific_song:
-                    song_subprocess = Popen(["afplay", str(self.specific_song[0])])
+                    song_subprocess = Popen(['afplay', str(self.specific_song[0])])
                     keep_going = False
 
             time.sleep(25)
