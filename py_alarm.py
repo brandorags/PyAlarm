@@ -50,10 +50,10 @@ class PyAlarm(object):
 
     def check_for_hour_and_minute(self, hour, minute):
         global song_subprocess
-        now = datetime.now()
         keep_going = True
 
         while keep_going:
+            now = datetime.now()
             if hour == now.hour and minute == now.minute:
                 if self.album_list and self.random_song:
                     song_subprocess = Popen(["afplay", self.album_list[self.random_song]])
@@ -78,4 +78,4 @@ class PyAlarm(object):
             song_subprocess.terminate()
 
         if hour_minute_checker.is_alive():
-            hour_minute_checker.terminate()
+            hour_minute_checker.cancel()
