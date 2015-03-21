@@ -1,5 +1,6 @@
 from datetime import datetime
 from subprocess import Popen, call
+import os
 import random
 import glob
 import time
@@ -7,6 +8,7 @@ import threading
 
 song_subprocess = None  # this subprocess will play the alarm sound/song
 hour_minute_checker = None
+volume_level = None
 
 
 class PyAlarm(object):
@@ -52,9 +54,19 @@ class PyAlarm(object):
             now = datetime.now()
             if hour == now.hour and minute == now.minute:
                 if self.album_list and self.random_song:
+                    global volume_level
+                    volume_level = threading.Timer(0.5, self.set_volume)
+                    volume_level.daemon = True
+                    volume_level.start()
+
                     song_subprocess = Popen(['afplay', self.album_list[self.random_song]])
                     keep_going = False
                 elif self.specific_song:
+                    global volume_level
+                    volume_level = threading.Timer(0.5, self.set_volume)
+                    volume_level.daemon = True
+                    volume_level.start()
+
                     song_subprocess = Popen(['afplay', str(self.specific_song[0])])
                     keep_going = False
 
@@ -75,3 +87,15 @@ class PyAlarm(object):
 
         if hour_minute_checker.is_alive():
             hour_minute_checker.cancel()
+
+        if volume_level.is_alive():
+            volume_level.cancel()
+
+
+
+    def set_volume(self):
+        current_volume = 1
+        while current_volume <= 10:
+            os.system("osascript -e 'set Volume " + str(current_volume) + "'")
+            current_volume += 0.5
+            time.sleep(5)
