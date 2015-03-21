@@ -2,4 +2,5 @@ venv/
 .idea/
 __pycache__/
 obsolete_files/
+py2app_installer/
 *.pyc
