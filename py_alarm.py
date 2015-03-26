@@ -33,8 +33,11 @@ volume_level = None
 class PyAlarm(object):
     """
     album_list, random_song -> used for playing a random song
-    in a selected album
+      in a selected album
     specific_song -> used for playing a specific selected song
+    stop_volume_increase -> used to stop set_volume from increasing
+      the volume in the background after the user has already turned
+      off the alarm
     """
     album_list = None
     random_song = None
@@ -76,6 +79,7 @@ class PyAlarm(object):
     def check_for_hour_and_minute(self, hour, minute):
         global song_subprocess
         keep_going = True
+        self.stop_volume_increase = False
 
         while keep_going:
             global volume_level
@@ -101,6 +105,7 @@ class PyAlarm(object):
 
     def play_song_at_specified_time(self, hour, minute):
         global hour_minute_checker
+
         hour_minute_checker = threading.Timer(0.5, self.check_for_hour_and_minute,
                                               args=(hour, minute))
         hour_minute_checker.daemon = True
@@ -122,7 +127,7 @@ class PyAlarm(object):
 
     def set_volume(self):
         current_volume = 1
-        while current_volume <= 10 or self.stop_volume_increase is False:
+        while current_volume <= 10 and self.stop_volume_increase is False:
             os.system("osascript -e 'set Volume " + str(current_volume) + "'")
             current_volume += 0.5
             time.sleep(5)
