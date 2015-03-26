@@ -39,6 +39,7 @@ class PyAlarm(object):
     album_list = None
     random_song = None
     specific_song = None
+    stop_volume_increase = False
 
     def create_and_randomize_song_list(self, user_selected_directory):
         if user_selected_directory:
@@ -48,7 +49,7 @@ class PyAlarm(object):
                           user_selected_directory + '/*.aiff',
                           user_selected_directory + '/*.flac',
                           user_selected_directory + '/*.ogg',
-                          user_selected_directory + '/*.wav',)
+                          user_selected_directory + '/*.wav')
 
             songs_from_user_selected_directory = []
 
@@ -77,10 +78,11 @@ class PyAlarm(object):
         keep_going = True
 
         while keep_going:
+            global volume_level
             now = datetime.now()
+
             if hour == now.hour and minute == now.minute:
                 if self.album_list and self.random_song:
-                    global volume_level
                     volume_level = threading.Timer(0.5, self.set_volume)
                     volume_level.daemon = True
                     volume_level.start()
@@ -88,7 +90,6 @@ class PyAlarm(object):
                     song_subprocess = Popen(['afplay', self.album_list[self.random_song]])
                     keep_going = False
                 elif self.specific_song:
-                    global volume_level
                     volume_level = threading.Timer(0.5, self.set_volume)
                     volume_level.daemon = True
                     volume_level.start()
@@ -108,6 +109,7 @@ class PyAlarm(object):
     def stop_song(self):
         global song_subprocess
         global hour_minute_checker
+
         if song_subprocess:
             song_subprocess.terminate()
 
@@ -116,12 +118,11 @@ class PyAlarm(object):
 
         if volume_level.is_alive():
             volume_level.cancel()
-
-
+            self.stop_volume_increase = True
 
     def set_volume(self):
         current_volume = 1
-        while current_volume <= 10:
+        while current_volume <= 10 or self.stop_volume_increase is False:
             os.system("osascript -e 'set Volume " + str(current_volume) + "'")
             current_volume += 0.5
             time.sleep(5)
