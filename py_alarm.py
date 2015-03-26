@@ -23,7 +23,14 @@ class PyAlarm(object):
 
     def create_and_randomize_song_list(self, user_selected_directory):
         if user_selected_directory:
-            song_types = (user_selected_directory + '/*.mp3', user_selected_directory + '/*.m4a')
+            song_types = (user_selected_directory + '/*.mp3',
+                          user_selected_directory + '/*.m4a',
+                          user_selected_directory + '/*.m4p',
+                          user_selected_directory + '/*.aiff',
+                          user_selected_directory + '/*.flac',
+                          user_selected_directory + '/*.ogg',
+                          user_selected_directory + '/*.wav',)
+            
             songs_from_user_selected_directory = []
 
             for songs in song_types:
