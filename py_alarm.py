@@ -114,6 +114,7 @@ class PyAlarm(object):
     def stop_song(self):
         global song_subprocess
         global hour_minute_checker
+        global volume_level
 
         if song_subprocess:
             song_subprocess.terminate()
@@ -121,9 +122,13 @@ class PyAlarm(object):
         if hour_minute_checker.is_alive():
             hour_minute_checker.cancel()
 
-        if volume_level.is_alive():
-            volume_level.cancel()
-            self.stop_volume_increase = True
+        try:
+            if volume_level.is_alive():
+                volume_level.cancel()
+                os.system("osascript -e 'set Volume 0'")
+                self.stop_volume_increase = True
+        except:
+            os.system("osascript -e 'set Volume 0'")
 
     def set_volume(self):
         current_volume = 1
